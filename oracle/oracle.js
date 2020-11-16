@@ -1,5 +1,6 @@
 const { oraConfig } = require("./config");
 const oracledb = require("oracledb");
+const option = { resultSet: false, outFormat: oracledb.OBJECT };
 //  oracle
 let oraConnection;
 const conn = () => {
@@ -12,90 +13,104 @@ const conn = () => {
   });
 };
 /**
- * 获取角色批注列表
+ * 通用执行函数
+ * @param {*} SQL 
+ * @param {*} fn 
+ */
+const oracleExecute = (SQL) => {
+  return new Promise((resolve, reject) => {
+    oraConnection.execute(
+      SQL,
+      [],
+      option,
+      (err, result) => {
+        err ? reject(err.message) : resolve(result)
+      }
+    );
+  })
+
+}
+/**
+ * 获取事件列表
  * @param {*} userid
  * @param {*} fn
  */
-const fetchLabelList = (data, fn) => {
-  const { userid, info, type, prod, stime, etime } = data;
-  const SQLPARAMS = [userid];
-  let SQLSTRING = "";
-  info && (SQLSTRING += ` and INFO like '%${info}%'`);
-  type && (SQLSTRING += ` and TYPE like '%${type}%'`);
-  prod && SQLPARAMS.push(prod) && (SQLSTRING += ` and prod = :prod`);
-  stime &&
-    etime &&
-    (SQLSTRING += ` and UPDATEDATE between to_date('${stime} 00:00:00','yyyy-mm-dd hh24:mi:ss') and to_date('${etime} 23:59:59','yyyy-mm-dd hh24:mi:ss')`);
-  oraConnection.execute(
-    `SELECT * FROM NODELABEL WHERE USERID = :userid ${SQLSTRING} ORDER BY UPDATEDATE DESC`,
-    SQLPARAMS,
-    { autoCommit: true },
-    (err, result) => {
-      if (err) {
-        console.error(err.message);
-        return;
-      }
-      fn && fn(result);
-    }
+const getEventList = async (data) => {
+  return oracleExecute(
+    "SELECT OCCURORG,SUBJECT,LASTUSERNAME,LAT,LON,OCCURDATE FROM ISSUES_TEMP ORDER BY OCCURDATE DESC",
   );
 };
 /**
- * 删除指定批注
- * @param {*} id
- * @param {*} fn
+ * 获取刑满释放人员
+ * @param {*} data 
+ * @param {*} fn 
  */
-const deleteLabelList = (id, fn) => {
-  oraConnection.execute(
-    `DELETE FROM NODELABEL WHERE ID = :id`,
-    [id],
-    { autoCommit: true },
-    (err, result) => {
-      if (err) {
-        console.error(err.message);
-        return;
-      }
-      fn && fn(result);
-    }
+const getPositiveinfosList = (data) => {
+  return oracleExecute(
+    "SELECT ORGID,NATIVEPOLICESTATION,CURRENTADDRESS,NAME,RELEASEORBACKDATE FROM POSITIVEINFOS_TEMP ORDER BY RELEASEORBACKDATE DESC",
   );
 };
 /**
- * 插入批注
- * @param {*} sql
- * @param {*} obj
- * @param {*} fn
+ * 获取社区矫正人员
+ * @param {*} data 
+ * @param {*} fn 
  */
-const oracleInsert = (sql, obj, fn) => {
-  oraConnection.execute(sql, obj, { autoCommit: true }, (err, result) => {
-    if (err) {
-      console.error(err.message);
-      return;
-    }
-    fn && fn(result);
-  });
+const getRectificativepersonsList = (data) => {
+  return oracleExecute(
+    "SELECT ORGID,NATIVEPOLICESTATION,CURRENTADDRESS,NAME FROM RECTIFICATIVEPERSONS_TEMP ORDER BY ORGID ASC",
+  );
 };
 /**
- * 更新批注
- * @param {*} sql
- * @param {*} obj
- * @param {*} fn
+ * 获取精神病人员
+ * @param {*} data 
+ * @param {*} fn 
  */
-const oracleUpdate = (sql, obj, fn) => {
-  oraConnection.execute(sql, obj, { autoCommit: true }, (err, result) => {
-    if (err) {
-      console.error(err.message);
-      return;
-    }
-    fn && fn(result);
-  });
+const getMentalpatientsList = (data) => {
+  return oracleExecute(
+    "SELECT ORGID,NATIVEPOLICESTATION,NATIVEPLACEADDRESS,NAME FROM MENTALPATIENTS_TEMP ORDER BY ORGID ASC",
+  );
+};
+/**
+ * 获取吸毒人员
+ * @param {*} data 
+ * @param {*} fn 
+ */
+const getDruggysList = (data) => {
+  return oracleExecute(
+    "SELECT ORGID,NATIVEPOLICESTATION,CURRENTADDRESS,NAME FROM DRUGGYS_TEMP ORDER BY ORGID ASC",
+  );
+};
+/**
+ * 获取重点上访人员
+ * @param {*} data 
+ * @param {*} fn 
+ */
+const getSuperiorvisitsList = (data) => {
+  return oracleExecute(
+    "SELECT ORGID,NATIVEPOLICESTATION,CURRENTADDRESS,NAME FROM SUPERIORVISITS_TEMP ORDER BY ORGID ASC",
+  );
+};
+/**
+ * 获取涉稳人员信息
+ * @param {*} data 
+ * @param {*} fn 
+ */
+const getInvolvingstabilitypeList = (data) => {
+  return oracleExecute(
+    "SELECT ORGID,NATIVEPOLICESTATION,CURRENTADDRESS,NAME FROM INVOLVINGSTABILITYPS_TEMP ORDER BY ORGID ASC",
+  );
 };
 /**
  * 释放链接
  */
 const doRelease = () => oraConnection.close();
 module.exports = {
-  conn,
-  fetchLabelList,
-  oracleInsert,
-  oracleUpdate,
-  deleteLabelList,
+  conn, doRelease,
+  getEventList,
+  getPositiveinfosList,
+  getRectificativepersonsList,
+  getMentalpatientsList,
+  getDruggysList,
+  getSuperiorvisitsList,
+  getInvolvingstabilitypeList
 };
