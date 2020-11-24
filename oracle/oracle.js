@@ -38,7 +38,7 @@ const oracleExecute = (SQL, data = []) => {
  */
 const getEventList = async (params) => {
   return oracleExecute(
-    "SELECT DISTINCT ID,OCCURORG,SUBJECT,LASTUSERNAME,LAT,LON,OCCURDATE,ISSUECONTENT FROM ISSUES_TEMP ORDER BY OCCURDATE DESC",
+    "SELECT DISTINCT * FROM ISSUES_TEMP ORDER BY OCCURDATE DESC",
   );
 };
 const getEventLog = async (params) => {
