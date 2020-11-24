@@ -5,7 +5,8 @@ const { getPositiveinfosList,
     getMentalpatientsList,
     getDruggysList,
     getSuperiorvisitsList,
-    getInvolvingstabilitypeList
+    getInvolvingstabilitypeList,
+    getGridMemberList
 } = require("../../oracle/oracle");
 /**
  * 获取刑满释放人员
@@ -57,13 +58,18 @@ router.get("/getAllKindsList", async (req, res) => {
     const involve = await getInvolvingstabilitypeList();
     res.send({
         status: 200, data: {
-            刑满释放:positive,
-            社区矫正:rectificative, 
-            精神病人:mental, 
-            吸毒人员:drug, 
-            重点上访:superior, 
-            涉稳人员:involve
+            刑满释放: positive,
+            社区矫正: rectificative,
+            精神病人: mental,
+            吸毒人员: drug,
+            重点上访: superior,
+            涉稳人员: involve
         }
     });
 });
+//  获取网格员列表
+router.get("/getGridMemberList", async (req, res) => {
+    const data = await getGridMemberList();
+    res.send({ status: 200, data });
+})
 module.exports = router;

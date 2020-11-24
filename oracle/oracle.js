@@ -109,6 +109,16 @@ const getInvolvingstabilitypeList = (params) => {
   );
 };
 /**
+ * 获取网格员列表
+ * @param {*} params 
+ * @param {*} fn 
+ */
+const getGridMemberList = (params) => {
+  return oracleExecute(
+    "SELECT DISTINCT * FROM GRIDMEMBER",
+  );
+};
+/**
  * 释放链接
  */
 const doRelease = () => oraConnection.close();
@@ -121,5 +131,6 @@ module.exports = {
   getMentalpatientsList,
   getDruggysList,
   getSuperiorvisitsList,
-  getInvolvingstabilitypeList
+  getInvolvingstabilitypeList,
+  getGridMemberList
 };
