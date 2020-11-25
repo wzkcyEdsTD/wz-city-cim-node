@@ -118,6 +118,18 @@ const getGridMemberList = (params) => {
     "SELECT DISTINCT * FROM GRIDMEMBER",
   );
 };
+
+/**
+ * 获取网格员路径信息
+ * @param {*} param 
+ */
+const getGridMemberRouteLink = (params) => {
+  const { name } = params;
+  return oracleExecute(
+    "SELECT DISTINCT * FROM GRIDMEMBERTRACKRECORD WHERE NAME = :name ORDER BY STARTTIME DESC",
+    [name]
+  );
+}
 /**
  * 释放链接
  */
@@ -132,5 +144,6 @@ module.exports = {
   getDruggysList,
   getSuperiorvisitsList,
   getInvolvingstabilitypeList,
-  getGridMemberList
+  getGridMemberList,
+  getGridMemberRouteLink
 };

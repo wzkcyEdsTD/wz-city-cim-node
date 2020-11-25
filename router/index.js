@@ -11,4 +11,6 @@ router.all("*", (req, res, next) => {
 });
 router.use('/event', require('./event/index.js'));
 router.use('/staff', require('./staff/index.js'));
+router.use('/grid', require('./grid/index.js'))
+router.use('/forward', require('./forward/index.js'))
 module.exports = router; 

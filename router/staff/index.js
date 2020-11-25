@@ -6,7 +6,6 @@ const { getPositiveinfosList,
     getDruggysList,
     getSuperiorvisitsList,
     getInvolvingstabilitypeList,
-    getGridMemberList
 } = require("../../oracle/oracle");
 /**
  * 获取刑满释放人员
@@ -67,9 +66,4 @@ router.get("/getAllKindsList", async (req, res) => {
         }
     });
 });
-//  获取网格员列表
-router.get("/getGridMemberList", async (req, res) => {
-    const data = await getGridMemberList();
-    res.send({ status: 200, data });
-})
 module.exports = router;
