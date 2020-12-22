@@ -38,7 +38,7 @@ const oracleExecute = (SQL, data = []) => {
  */
 const getEventList = async (params) => {
   return oracleExecute(
-    "SELECT DISTINCT * FROM ISSUES_TEMP left join (SELECT * FROM (SELECT ISSUEID,PHOTOURL , row_number() over (partition BY ISSUEID ORDER BY PHOTOURL )d FROM ISSUE_PHOTO_TEMP ) WHERE d = 1) IP on ISSUES_TEMP.ID = IP.ISSUEID ORDER BY ISSUES_TEMP.OCCURDATE DESC",
+    "SELECT DISTINCT * FROM (SELECT * FROM ISSUES_TEMP WHERE OCCURDATE BETWEEN to_date('2020-12-01 00:00:00','yyyy-MM-dd HH24:MI:SS') AND to_date('2020-12-31 23:59:59','yyyy-MM-dd HH24:MI:SS')) I left join (SELECT * FROM (SELECT ISSUEID,PHOTOURL , row_number() over (partition BY ISSUEID ORDER BY PHOTOURL )d FROM ISSUE_PHOTO_TEMP ) WHERE d = 1) IP on I.ID = IP.ISSUEID ORDER BY I.OCCURDATE DESC",
   );
 };
 const getEventLog = async (params) => {
