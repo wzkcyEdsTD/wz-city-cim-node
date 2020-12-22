@@ -38,7 +38,7 @@ const oracleExecute = (SQL, data = []) => {
  */
 const getEventList = async (params) => {
   return oracleExecute(
-    "SELECT DISTINCT * FROM ISSUES_TEMP ORDER BY OCCURDATE DESC",
+    "SELECT DISTINCT * FROM ISSUES_TEMP left join (SELECT * FROM (SELECT ISSUEID,PHOTOURL , row_number() over (partition BY ISSUEID ORDER BY PHOTOURL )d FROM ISSUE_PHOTO_TEMP ) WHERE d = 1) IP on ISSUES_TEMP.ID = IP.ISSUEID ORDER BY ISSUES_TEMP.OCCURDATE DESC",
   );
 };
 const getEventLog = async (params) => {
