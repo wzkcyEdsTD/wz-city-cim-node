@@ -118,6 +118,17 @@ const getGridMemberList = (params) => {
     "SELECT DISTINCT * FROM GRIDMEMBER",
   );
 };
+/**
+ * 通过网格获取网格员
+ * @param {*} params 
+ */
+const getGridManagerByGrid = (params) => {
+  const { grid } = params;
+  return oracleExecute(
+    "SELECT DISTINCT * FROM GRIDMANAGER WHERE GRID = :grid ",
+    [grid]
+  );
+}
 
 /**
  * 获取网格员路径信息
@@ -145,5 +156,6 @@ module.exports = {
   getSuperiorvisitsList,
   getInvolvingstabilitypeList,
   getGridMemberList,
+  getGridManagerByGrid,
   getGridMemberRouteLink
 };
