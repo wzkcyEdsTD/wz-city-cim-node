@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { getEventList, getEventLog } = require("../../oracle/oracle");
+const { getEventList, getEventLog } = require("../../oracle/cimTool");
 
 //  获取事件列表
 router.get("/getEventList", async (req, res) => {

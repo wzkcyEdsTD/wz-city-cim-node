@@ -9,8 +9,11 @@ router.all("*", (req, res, next) => {
     res.header("Content-Type", "application/json;charset=utf-8");
     next();
 });
-router.use('/event', require('./event/index.js'));
-router.use('/staff', require('./staff/index.js'));
-router.use('/grid', require('./grid/index.js'))
-router.use('/forward', require('./forward/index.js'))
+//  cim 平台
+router.use('/event', require('./cim-modules/event.js'));
+router.use('/staff', require('./cim-modules/staff.js'));
+router.use('/grid', require('./cim-modules/grid.js'))
+router.use('/forward', require('./cim-modules/forward.js'))
+//  video 工具
+router.use('/video', require('./video-modules/video.js'))
 module.exports = router; 

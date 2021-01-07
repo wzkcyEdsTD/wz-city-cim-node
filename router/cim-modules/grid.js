@@ -4,7 +4,7 @@ const {
     getGridMemberList,
     getGridMemberRouteLink,
     getGridManagerByGrid
-} = require("../../oracle/oracle");
+} = require("../../oracle/cimTool");
 //  获取网格员列表
 router.get("/getGridMemberList", async (req, res) => {
     const data = await getGridMemberList();

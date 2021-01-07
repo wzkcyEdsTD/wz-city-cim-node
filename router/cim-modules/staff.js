@@ -6,7 +6,7 @@ const { getPositiveinfosList,
     getDruggysList,
     getSuperiorvisitsList,
     getInvolvingstabilitypeList,
-} = require("../../oracle/oracle");
+} = require("../../oracle/cimTool");
 /**
  * 获取刑满释放人员
  */
